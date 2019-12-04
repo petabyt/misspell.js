@@ -28,31 +28,39 @@ var nearbykeys = {
 };
 
 function misspell(word) {
-	var mistake = Math.floor(4 * Math.random()),
-		wordSplit = word.split(""),
-		randomCharacter = Math.floor(Math.random() * word.length + 1),
-		a = word.removeLetters("constants").split(""),
-		randomVowel = a[Math.floor(Math.random() * a.length)],
-		b = word.removeLetters("vowels").split(""),
-		randomConstant = b[Math.floor(Math.random() * b.length)];
-	if (0 == mistake) wordSplit.splice(randomCharacter + 1, 0, wordSplit[
-		randomCharacter]);
-	else if (1 == mistake) wordSplit.splice(wordSplit.indexOf(wordSplit[
-		randomCharacter]), 1);
-	else if (2 == mistake) wordSplit = word.replace(randomConstant, randomVowel).split(
-		"");
-	else if (3 == mistake) wordSplit = word.replace(randomVowel, randomConstant).split(
-		"");
-	else if ("4" == mistake) {
-		var randomNearybyKey = Math.floor(Math.random() * eval("nearbykeys." +
-			wordSplit[randomCharacter]).length);
-		wordSplit = word.replace(wordSplit[randomCharacter], eval("nearbykeys." +
-			wordSplit[randomCharacter])[randomNearybyKey]).split("")
+	var mistake = Math.floor(4 * Math.random()), // Random mistake number
+	wordSplit = word.split(""), // Split string into seperate characters
+	randomCharacter = Math.floor(Math.random() * word.length + 1), // Get a random letter from the string (in number)
+	a = word.removeLetters("constants").split(""),
+	b = word.removeLetters("vowels").split(""),
+	randomVowel = a[Math.floor(Math.random() * a.length)],
+	randomConstant = b[Math.floor(Math.random() * b.length)];
+
+	if (mistake == 0) {
+		wordSplit.splice(randomCharacter + 1, 0, wordSplit[randomCharacter]);
 	}
+	// Remove random character
+	else if (mistake == 1) {
+		wordSplit.splice(wordSplit.indexOf(wordSplit[randomCharacter]), 1);
+	}
+	// Replace random constant with vowel
+	else if (mistake == 2) {
+		wordSplit = word.replace(randomConstant, randomVowel).split("");
+	}
+	// Replace random vowel with constant
+	else if (mistake == 3) {
+		wordSplit = word.replace(randomVowel, randomConstant).split("");
+	}
+	// Replace with nearby key
+	else if (mistake == 4) {
+		var randomNearybyKey = Math.floor(Math.random() * eval("nearbykeys." + wordSplit[randomCharacter]).length);
+		wordSplit = word.replace(wordSplit[randomCharacter], eval("nearbykeys." + wordSplit[randomCharacter])[randomNearybyKey]).split("");
+	}
+
 	return wordSplit.join("")
 }
+
 String.prototype.removeLetters = function(r) {
 	var a = this;
-	return "vowels" == r ? a = a.replace(/[euioa]/gi, "") : "constants" == r && (
-		a = a.replace(/[qwrtypsdfghjklzxcvbnm]/gi, "")), a
+	return "vowels" == r ? a = a.replace(/[euioa]/gi, "") : "constants" == r && (a = a.replace(/[qwrtypsdfghjklzxcvbnm]/gi, "")), a
 };
